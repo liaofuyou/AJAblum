@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import me.aj.ablum.SelectImageActivity;
 import me.aj.ablum.SelectType;
+import me.aj.ablum.utils.AblumConstants;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Intent intent = new Intent(this, SelectImageActivity.class);
-        intent.putExtra(SelectImageActivity.EXTRA_SELECT_TYPE, SelectType.SINGLE);
+        intent.putExtra(AblumConstants.EXTRA_SELECT_TYPE, SelectType.MILTIPLE);
         startActivity(intent);
     }
 }

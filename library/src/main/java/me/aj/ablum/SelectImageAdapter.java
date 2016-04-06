@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,6 +21,12 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
+import me.aj.ablum.utils.AblumConstants;
+import me.aj.ablum.utils.DeviceUtils;
+import me.aj.ablum.utils.TempFileHelper;
+import me.aj.ablum.utils.ImageViewWarper;
+import me.aj.ablum.utils.ScanUtils;
 
 /**
  * Created by Aj Liao
@@ -106,12 +111,9 @@ public class SelectImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View v) {
                     if (position == 0) {
-                        //启动相机
-                        launchCamera();
+                        launchCamera();//启动相机
                     } else {
-                        //如果是单选,启动预览
-                        //如果是多选，也启动预览
-                        Log.e("-------------", "uri:" + uri.toString());
+                        toPreviewImage(uri);//启动预览
                     }
                 }
             });
@@ -148,7 +150,7 @@ public class SelectImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         File tempCameraFile;
 
         try {
-            tempCameraFile = FileUtils.geneTempCameraFile();
+            tempCameraFile = TempFileHelper.geneTempCameraFile();
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(activity, "请插入SD卡", Toast.LENGTH_SHORT).show();
@@ -156,8 +158,17 @@ public class SelectImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);// 打开相机
-        intent.putExtra("output", Uri.fromFile(tempCameraFile));
-        activity.startActivityForResult(intent, SelectImageActivity.REQUEST_CODE_OPEN_CAMERA);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempCameraFile));
+        activity.startActivityForResult(intent, AblumConstants.REQUEST_CODE_OPEN_CAMERA);
+    }
+
+    /**
+     * 去预览界面
+     */
+    private void toPreviewImage(Uri uri) {
+        Intent intent = new Intent(activity, PreviewImageActivity.class);
+        intent.putExtra(AblumConstants.EXTRA_PREVIEW_URL, uri);
+        activity.startActivityForResult(intent, AblumConstants.REQUEST_CODE_PREVIEW);
     }
 
 

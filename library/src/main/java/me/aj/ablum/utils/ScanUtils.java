@@ -1,4 +1,4 @@
-package me.aj.ablum;
+package me.aj.ablum.utils;
 
 import android.content.Context;
 import android.database.Cursor;

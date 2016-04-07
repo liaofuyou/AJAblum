@@ -1,6 +1,8 @@
 package me.aj.ablum.utils;
 
+import android.content.Context;
 import android.os.Environment;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,28 +13,42 @@ import java.io.IOException;
 public class TempFileHelper {
 
     private static String tempCameraPhotoName = "temp_camera_photo.png";
+    private static String tempCropPhotoName = "temp_crop_photo.png";
 
     /**
      * 生成临时文件
      */
-    public static File geneTempCameraFile() throws IOException {
+    private static File geneTempFile(Context context, String tempFileName) {
 
-        File tempCameraFile = new File(getAblumTempDir() + tempCameraPhotoName);
+        File tempFile = new File(getAblumTempDir() + tempFileName);
 
-        if (!tempCameraFile.exists()) {
+        if (!tempFile.exists()) {
             if (!checkSDCardAvailable()) {
-                throw new IOException();
+                Toast.makeText(context, "请插入SD卡", Toast.LENGTH_SHORT).show();
+                return null;
             }
-            tempCameraFile.createNewFile();
+            try {
+                tempFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(context, "无法创建临时文件", Toast.LENGTH_SHORT).show();
+            }
         }
-        return tempCameraFile;
+        return tempFile;
     }
 
     /**
-     * 取得临时文件
+     * 取得临时文件:相机
      */
-    public static File getTempCameraFile(){
-        return new File(getAblumTempDir() + tempCameraPhotoName);
+    public static File getTempCameraFile(Context context) {
+        return geneTempFile(context, tempCameraPhotoName);
+    }
+
+    /**
+     * 取得临时文件:裁剪
+     */
+    public static File getTempCropFile(Context context) {
+        return geneTempFile(context, tempCropPhotoName);
     }
 
     /**

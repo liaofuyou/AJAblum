@@ -16,6 +16,16 @@ public class AblumConstants {
     public static int REQUEST_CODE_PREVIEW = 2;
 
     /**
+     * 选择图片
+     */
+    public static int REQUEST_CODE_SELECT_IMAGE = 3;
+
+    /**
+     * 裁剪图片
+     */
+    public static int REQUEST_CODE_CROP = 4;
+
+    /**
      * 请求单张图片返回的值，会返回一个Uri对象
      */
     public static String EXTRA_URI = "EXTRA_URI";
@@ -34,4 +44,9 @@ public class AblumConstants {
      * 要预览的图片的URL
      */
     public static String EXTRA_PREVIEW_URL = "EXTRA_PREVIEW_URL";
+
+    /**
+     * 是否需要裁剪，对于“多选”情况无效
+     */
+    public static String EXTRA_IS_CROP = "EXTRA_IS_CROP";
 }

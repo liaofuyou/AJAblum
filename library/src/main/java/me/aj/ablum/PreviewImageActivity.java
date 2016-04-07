@@ -31,7 +31,7 @@ public class PreviewImageActivity extends AppCompatActivity {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent().putExtra(AblumConstants.EXTRA_URI, previewImageUrl);
+                    Intent intent = getIntent().putExtra(AblumConstants.EXTRA_URI, previewImageUrl);
                     setResult(RESULT_OK, intent);
                     finish();
                 }

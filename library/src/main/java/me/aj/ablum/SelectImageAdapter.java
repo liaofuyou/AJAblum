@@ -147,15 +147,8 @@ public class SelectImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
      */
     private void launchCamera() {
 
-        File tempCameraFile;
-
-        try {
-            tempCameraFile = TempFileHelper.geneTempCameraFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(activity, "请插入SD卡", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        File tempCameraFile = TempFileHelper.getTempCameraFile(activity);
+        if (tempCameraFile == null || !tempCameraFile.exists()) return;
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);// 打开相机
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempCameraFile));
@@ -168,6 +161,7 @@ public class SelectImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private void toPreviewImage(Uri uri) {
         Intent intent = new Intent(activity, PreviewImageActivity.class);
         intent.putExtra(AblumConstants.EXTRA_PREVIEW_URL, uri);
+        intent.putExtra(AblumConstants.EXTRA_SELECT_TYPE, selectType);
         activity.startActivityForResult(intent, AblumConstants.REQUEST_CODE_PREVIEW);
     }
 
